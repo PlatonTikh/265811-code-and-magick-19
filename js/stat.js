@@ -25,6 +25,7 @@ var STRINGS_INDENT = 20;
 // hsl parameters
 var HSL_HUE = '240';
 var HSL_LIGHTNESS = '50%';
+var HSL_SATURATION_RANGE = 100;
 
 
 // draw rectangular cloud
@@ -73,7 +74,7 @@ window.renderStatistics = function (ctx, names, times) {
     if (names[i] === 'Вы') {
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
     } else {
-      var hslSaturation = Math.floor(Math.random() * 101) + '%, ';
+      var hslSaturation = Math.floor(Math.random() * HSL_SATURATION_RANGE) + '%, ';
       ctx.fillStyle = 'hsl(' + HSL_HUE + ', ' + hslSaturation + HSL_LIGHTNESS + ')';
     }
     // draw bars
