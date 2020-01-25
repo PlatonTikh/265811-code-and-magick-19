@@ -8,7 +8,7 @@ var CLOUD_HEIGHT = 270;
 // shade indent
 var SHADE_INDENT = 10;
 // width and height of bars
-var BAR_HEIGHT = 150;
+var BASE_BAR_HEIGHT = 150;
 var BAR_WIDTH = 40;
 // gap between bars
 var GAP = 50;
@@ -35,14 +35,14 @@ var renderCloud = function (ctx, x, y, color) {
   ctx.fill();
 };
 
-var getMaxElement = function (arr) {
-  var maxElement = arr[0];
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] > maxElement) {
-      maxElement = arr[i];
-    }
-  }
-  return maxElement;
+// get bar height by time
+var getBarHeight = function (baseheight, time, maxtime) {
+  return baseheight * (time / maxtime);
+};
+
+//
+var getXPosition = function (i) {
+  return CLOUD_X + GAP * i + BAR_WIDTH * (i + 1);
 };
 
 window.renderStatistics = function (ctx, names, times) {
@@ -59,17 +59,19 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.fillText('Список результатов: ', WIN_TEXT_X, WIN_TEXT_Y + STRINGS_INDENT);
 
   // max time
-  var maxTime = Math.max.apply(Math, times);
+  var maxTime = Math.max.apply(null, times);
+
+  // vertical space win text requires
+  var winTextYSpace = WIN_TEXT_Y + STRINGS_INDENT + BASE_BAR_HEIGHT;
 
   // draw histogram
   for (var i = 0; i < names.length; i++) {
     // draw names and time labels
     ctx.fillStyle = 'black';
-    ctx.fillText(names[i], CLOUD_X + GAP * i + BAR_WIDTH * (i + 1),
+    ctx.fillText(names[i], getXPosition(i),
         CLOUD_Y + CLOUD_HEIGHT - TEXT_INDENT);
-    ctx.fillText(Math.floor(times[i]), CLOUD_X + GAP * i + BAR_WIDTH * (i + 1),
-        WIN_TEXT_Y + STRINGS_INDENT + BAR_LABELS_INDENT + BAR_HEIGHT - (BAR_HEIGHT * (times[i] / maxTime)));
-
+    ctx.fillText(Math.floor(times[i]).toString(), getXPosition(i),
+        winTextYSpace + BAR_LABELS_INDENT - getBarHeight(BASE_BAR_HEIGHT, times[i], maxTime));
     // define colors in dependence of name
     if (names[i] === 'Вы') {
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
@@ -78,9 +80,9 @@ window.renderStatistics = function (ctx, names, times) {
       ctx.fillStyle = 'hsl(' + HSL_HUE + ', ' + hslSaturation + HSL_LIGHTNESS + ')';
     }
     // draw bars
-    ctx.fillRect(CLOUD_X + GAP * i + BAR_WIDTH * (i + 1),
-        WIN_TEXT_Y + STRINGS_INDENT + BAR_UPPER_INDENT + BAR_HEIGHT - (BAR_HEIGHT * (times[i] / maxTime)),
-        BAR_WIDTH, BAR_HEIGHT * (times[i] / maxTime));
+    ctx.fillRect(getXPosition(i),
+        winTextYSpace + BAR_UPPER_INDENT - getBarHeight(BASE_BAR_HEIGHT, times[i], maxTime),
+        BAR_WIDTH, getBarHeight(BASE_BAR_HEIGHT, times[i], maxTime));
   }
 
 };
