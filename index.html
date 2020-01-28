@@ -181,9 +181,9 @@
   </div>
 </template>
 <script>
-// fireball size
+// Fireball size
 var fireballSize = 22;
-// fireball speed in dependence of wind direction
+// Fireball speed in dependence of wind direction
 var getFireballSpeed = function(left){
     if (left === true){
        return 5
@@ -191,19 +191,19 @@ var getFireballSpeed = function(left){
        return 2
     }
 }
-// wizard's speed
+// Wizard's speed
 var wizardSpeed = 3;
-// wizard's width
+// Wizard's width
 var wizardWidth = 70;
-// wizard's height by width
+// Wizard's height by his width
 var getWizardHeight = function(){
     return 1.337 * wizardWidth
 }
-// wizard's initial x position
+// Wizard's initial x position
 var getWizardX = function(width){
     return width / 2
 }
-// wizard's initial y position
+// Wizard's initial y position
 var getWizardY = function(height){
     return height - (height * 2 / 3)
 }
