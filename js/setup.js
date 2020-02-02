@@ -13,8 +13,6 @@ var generateRandomNumber = function (min, max) {
   var rand = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(rand);
 };
-// wizars array
-var characters = [];
 // function to create wizard
 var createWizard = function () {
   var firstName = NAMES[generateRandomNumber(0, NAMES.length - 1)];
@@ -28,27 +26,38 @@ var createWizard = function () {
   };
   return wizard;
 };
-// creating N_OBJECTS wizards
-for (var i = 0; i < N_OBJECTS; i++) {
-  characters.push(createWizard());
-}
-
+// creating several wizards
+var generateRandomWizards = function (numberOfObjects) {
+  // wizars array
+  var characters = [];
+  for (var i = 0; i < numberOfObjects; i++) {
+    characters.push(createWizard());
+  }
+  return characters;
+};
 
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 var similarListElement = userDialog.querySelector('.setup-similar-list');
 
-var renderWizard = function (character) {
-  var characterElement = similarWizardTemplate.cloneNode(true);
+// creating objects and adding details from random data
+var renderWizard = function (template, character) {
+  var characterElement = template.cloneNode(true);
   characterElement.querySelector('.setup-similar-label').textContent = character.name;
   characterElement.querySelector('.wizard-coat').style.fill = character.coatColor;
   characterElement.querySelector('.wizard-eyes').style.fill = character.eyesColor;
   return characterElement;
 };
 
-var fragment = document.createDocumentFragment();
-for (var j = 0; j < characters.length; j++) {
-  fragment.appendChild(renderWizard(characters[j]));
-}
+var wizards = generateRandomWizards(N_OBJECTS);
+// fill container with new elements
+var fillWIthElements = function (elements, container) {
+  var fragment = document.createDocumentFragment();
+  for (var j = 0; j < elements.length; j++) {
+    fragment.appendChild(renderWizard(similarWizardTemplate, elements[j]));
+  }
+  container.appendChild(fragment);
+};
+fillWIthElements(wizards, similarListElement);
 
-similarListElement.appendChild(fragment);
+// removing hidden from setup-similar block
 userDialog.querySelector('.setup-similar').classList.remove('hidden');
