@@ -6,11 +6,12 @@ userDialog.classList.remove('hidden');
 var N_OBJECTS = 4;
 var NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var COAT_COLORS = ['rgb (101, 137, 164)', 'rgb (241, 43, 107)', 'rgb (146, 100, 161)', 'rgb (56, 159, 117)', 'rgb (215, 210, 55)', 'rgb (0, 0, 0)'];
+var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 // function to generate integer between min and max
 var generateRandomNumber = function (min, max) {
   var rand = min - 0.5 + Math.random() * (max - min + 1);
+
   return Math.round(rand);
 };
 // function to create wizard
@@ -19,12 +20,12 @@ var createWizard = function () {
   var secondName = SURNAMES[generateRandomNumber(0, SURNAMES.length - 1)];
   var coatColor = COAT_COLORS[generateRandomNumber(0, COAT_COLORS.length - 1)];
   var eyesColor = EYES_COLORS[generateRandomNumber(0, EYES_COLORS.length - 1)];
-  var wizard = {
+
+  return {
     'name': firstName + ' ' + secondName,
     'coatColor': coatColor,
     'eyesColor': eyesColor
   };
-  return wizard;
 };
 // creating several wizards
 var generateRandomWizards = function (numberOfObjects) {
@@ -33,6 +34,7 @@ var generateRandomWizards = function (numberOfObjects) {
   for (var i = 0; i < numberOfObjects; i++) {
     characters.push(createWizard());
   }
+
   return characters;
 };
 
@@ -45,6 +47,7 @@ var renderWizard = function (template, character) {
   characterElement.querySelector('.setup-similar-label').textContent = character.name;
   characterElement.querySelector('.wizard-coat').style.fill = character.coatColor;
   characterElement.querySelector('.wizard-eyes').style.fill = character.eyesColor;
+
   return characterElement;
 };
 
